@@ -17,25 +17,28 @@ namespace AngryBirds
         GreenBall greenBall = new GreenBall(200, 150);
         public FormMain()
         {
-            DoubleBuffered = true;
             InitializeComponent();
+
+            Controls.Add(ball);
+            Controls.Add(blueball);
+            Controls.Add(greenBall);
+
             timerBall.Start();
         }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            ball.Draw(e.Graphics);
-            blueball.Draw(e.Graphics);
-            greenBall.Draw(e.Graphics);
-        }
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    base.OnPaint(e);
+        //    ball.Draw(e.Graphics);
+        //    blueball.Draw(e.Graphics);
+        //    greenBall.Draw(e.Graphics);
+        //}
 
         private void timerBall_Tick(object sender, EventArgs e)
         {
             ball.Move(ClientSize.Width, ClientSize.Height);
             blueball.Move(ClientSize.Width, ClientSize.Height);
             greenBall.Move(ClientSize.Width, ClientSize.Height);
-            Invalidate();
         }
     }
 }

@@ -4,36 +4,38 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AngryBirds
 {
-    class Ball
+    class Ball : PictureBox
     {
-        public int radius = 20;
+        protected int radius = 40;
 
-        public int x, y;
-
-        public int dx, dy;
+        protected int dx, dy;
         Random rand = new Random();
 
         public Ball(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            Width = radius * 2;
+            Height = radius * 2;
+            Image = Image.FromFile("images/red.png");
+            SizeMode = PictureBoxSizeMode.StretchImage;
+            
+
+            Left = x - radius;
+            Top = y - radius;
+
             dx = rand.Next(-5, 6);
             dy = rand.Next(-5, 6);
 
         }
 
-        public virtual void Draw(Graphics g)
-        {
-            g.FillEllipse(Brushes.Red, x, y, radius * 2, radius * 2);
-        }
 
         public virtual void Move(int width, int height)
         {
-            x += dx;
-            y += dy;
+            Left += dx;
+            Top += dy;
         }
     }
 
@@ -42,28 +44,22 @@ namespace AngryBirds
     {
         public BlueBall(int x, int y) : base(x, y)
         {
-
+            Image = Image.FromFile("images/blue.png");
         }
 
-        public virtual void Draw(Graphics g)
-        {
-            g.FillEllipse(Brushes.Blue, x - radius, y - radius, radius * 2, radius * 2);
-        }
 
         public override void Move(int width, int height)
         {
             base.Move(width, height);
 
-            if (x < 0 || x + radius * 2 > width)
+            if (Left < 0 || Right > width)
             {
                 dx = -dx;
-                x += dx;
             }
 
-            if (y < 0 || y + radius * 2 > height)
+            if (Top < 0 || Bottom > height)
             {
                 dy = -dy;
-                y += dy;
             }
         }
     }
@@ -77,13 +73,9 @@ namespace AngryBirds
 
         public GreenBall(int x, int y): base(x, y)
         {
-
+            Image = Image.FromFile("images/green.png");
         }
 
-        public virtual void Draw(Graphics g)
-        {
-            g.FillEllipse(Brushes.Green, x - radius, y - radius, radius * 2, radius * 2);
-        }
 
         public override void Move(int width, int height)
         {
@@ -92,11 +84,11 @@ namespace AngryBirds
                 speedY += gravity;
                 dy = (int)speedY;
 
-                y += dy;
+               Top += dy;
             }
-            if (y + radius >= height)
+            if (Bottom >= height)
             {
-                y = height - radius;
+                Top = height - Height;
                 fallBall = true;
                 dy = 0;
             }
